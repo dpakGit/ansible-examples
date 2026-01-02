@@ -1,10 +1,18 @@
 ---
+# Modified Playbook with vars_prompt 
+
 - name: Install lighttpd web server
   become: yes
   apt:
     name: lighttpd
     state: latest
     update_cache: yes
+
+- name: Prompt for server port
+  vars_prompt:
+    - name: server_port
+      prompt: Enter the server port number
+      private: no
 
 - name: Generate configuration file
   template:
@@ -13,8 +21,6 @@
     owner: root
     group: root
     mode: '0644'
-  vars:
-    server_port: 9090
 
 - name: Start lighttpd service
   become: yes
